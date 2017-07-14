@@ -10,28 +10,27 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import edu.mum.domain.Item;
-import edu.mum.service.ItemService;
+import edu.mum.rest.service.ItemRestService;
 
 @Controller
 @RequestMapping("/items")
 public class ItemController {
 	
 	@Autowired
-	private ItemService itemService;
+	ItemRestService itemRestService;
  
  	@RequestMapping({"","/all"})
 	public String list(Model model) {
-		model.addAttribute("items", itemService.findAll());
+		model.addAttribute("items", itemRestService.findAll());
 		return "items";
 	}
 	
  	@RequestMapping("/item")
 	public String getItemById(Model model, @RequestParam("id") Long id) {
 
-		Item item = itemService.findOne(id);
+		Item item = itemRestService.findOne(id);
 		model.addAttribute("item", item);
 		return "item";
 	}
@@ -49,7 +48,7 @@ public class ItemController {
 		}
 
  		try {
-			itemService.save(itemToBeAdded);
+ 			itemRestService.save(itemToBeAdded);
 		} catch (Exception up) {
 	      System.out.println("Transaction Failed!!!");
  
